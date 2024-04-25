@@ -1,0 +1,11 @@
+.PlantsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    row-gap: 30px;
+    column-gap: 5vw;
+
+    .PlantCardWrapper {
+        width: 100%;
+    }
+}
