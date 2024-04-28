@@ -4,7 +4,7 @@ import styles from './PlantsGrid.module.scss'
 
 export const PlantsGrid = ({plants}: {plants: Plant[]}) => {
     const mappedPlants = plants.map(plant => 
-    <div className={styles.PlantCardWrapper}>
+    <div className={styles.PlantCardWrapper} key={plant.slug}>
         <PlantCard 
             plant={plant}
         />

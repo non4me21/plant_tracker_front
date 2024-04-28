@@ -5,5 +5,9 @@
     height: 100%;
     display: grid;
     place-items: center;
-    filter: invert(1)
+    filter: invert(1);
+
+    .PlusIcon {
+        margin: 10px 0px;
+    }
 }

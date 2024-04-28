@@ -2,6 +2,7 @@ import { capitalizeString } from '@/utils/textFormatters'
 import { WaterButton } from '../WaterButton/WaterButton'
 import styles from './PlantCard.module.scss'
 import { formatDate } from '@/utils/objectFormatters'
+import Link from 'next/link'
 
 export interface Plant {
     name: string
@@ -12,10 +13,15 @@ export interface Plant {
 
 
 export const PlantCard = ({plant}: { plant: Plant }) => {
+
     const date = plant.lastTimeWatered && formatDate(plant.lastTimeWatered).split(' ')
+
     return (
         <div className={styles.PlantCard}>
-            <div className={styles.PlantInfo}>
+            <Link 
+                className={styles.PlantInfo}
+                href={`/roslina/${plant.slug}`}
+            >
                 <div className={styles.PlantNameWrapper}>
                     <span className={styles.PlantName}>{plant.name}</span>
                     {plant.room && 
@@ -30,7 +36,7 @@ export const PlantCard = ({plant}: { plant: Plant }) => {
                     </div>
                 </div>
                 }
-            </div>
+            </Link>
             <WaterButton 
                 slug={plant.slug}
             />

@@ -1,5 +1,3 @@
-import Image from "next/image";
-import styles from "./page.module.scss";
 import RootLayout from "./layout";
 import { snakeToCamel } from "@/utils/objectFormatters";
 import { PlantsGrid } from "@/components/PlantsGrid/PlantsGrid";

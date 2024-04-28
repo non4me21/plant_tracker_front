@@ -8,6 +8,7 @@ export const BlankPlant = () => {
         href={'/nowa-roslina'}
         >
             <Image 
+                className={styles.PlusIcon}
                 src={'icons/plus-circle-svgrepo-com.svg'}
                 alt='Plus Icon'
                 width={45}
