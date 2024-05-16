@@ -1,0 +1,112 @@
+.PlantModal {
+  width: 80%;
+  background-color: #a7ffa7;
+  padding: 20px 40px;
+  border-radius: 15px;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .ModalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .InputWrapper {
+      display:flex;
+      flex-direction: column;
+      gap: 5px;
+
+      label {
+        font-weight: bold;
+        color: rgb(0, 103, 22);
+      }
+
+      .NameInput, .RoomInput, .NotesInput {
+        padding: 5px 10px;
+        font-size: 18px;
+        border-radius: 5px;
+        border: 0px;
+        box-shadow: 0px 1px 16px 0px #9b9b9b;
+      }
+
+      .NameInput, .RoomInput {
+        width: 50%;
+      }
+
+      .NotesInput {
+        height: 5em;
+      }
+    }
+  }
+
+  
+  .Error {
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
+  }
+
+  .Info {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(4, 75, 0);
+  }
+
+  .Footer {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: end;
+
+    .LeftContent {
+      .DeleteButton {
+        padding: 5px 15px;
+        background-color: rgb(237, 0, 0);
+        font-size: 20px;
+        border-radius: 10px;
+        font-weight: bold;
+        color: white;
+        
+  
+        &:hover {
+          background-color: rgb(203, 0, 0);
+          cursor: pointer;
+        }
+      }
+    }
+
+    .RightContent {
+      display: flex;
+      gap: 10px;
+      .Button {
+        padding: 5px 15px;
+        background-color: rgb(0, 106, 0);
+        font-size: 20px;
+        border-radius: 10px;
+        font-weight: bold;
+        color: white;
+  
+        &:hover {
+          background-color: rgb(0, 98, 0);
+          cursor: pointer;
+        }
+      }
+  
+      .CancelButton {
+        padding: 5px 15px;
+        background-color: rgb(168, 50, 0);
+        font-size: 18px;
+        border-radius: 10px;
+        font-weight: normal;
+        color: white;
+  
+        &:hover {
+          background-color: rgb(141, 42, 0);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

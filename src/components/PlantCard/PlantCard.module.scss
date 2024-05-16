@@ -1,0 +1,48 @@
+.PlantCard {
+    display: flex;
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 27px -8px rgba(66, 68, 90, 1);
+    font-size: 16px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+    span {
+        color: black;
+    }
+
+    .PlantInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        text-decoration: none;
+        flex-grow: 1;
+
+        .PlantNameWrapper {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            .PlantName {
+                font-size: 22px;
+                font-weight: bold;
+            }
+            .PlantRoom {
+                font-size: 20px;
+                opacity: 0.6;
+            }
+        }
+    }
+    .PlantLast {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        .PlantLastData {
+            display: flex;
+            gap: 5px;
+        }
+    }
+
+}
