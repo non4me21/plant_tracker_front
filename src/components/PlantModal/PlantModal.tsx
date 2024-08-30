@@ -1,15 +1,17 @@
 'use client'
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import styles from './PlantsModal.module.scss'
 import { sendDeleteRequest, sendPatchRequest, sendPostRequest } from '@/utils/requestsUtils';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link'
 
 interface PlantModalProps {
   name?: string;
   room?: string;
   notes?: string;
   slug?: string;
-  update?: boolean
+  image?: string;
+  update?: boolean;
 }
 
 
@@ -20,10 +22,11 @@ export const PlantModal = (props: PlantModalProps) => {
     serwer: 'Problem z przetworzeniem żądania'
   }
 
-  const [name, setName] = useState<string | undefined>(props.name)
-  const [room, setRoom] = useState<string | undefined>(props.room)
-  const [notes, setNotes] = useState<string | undefined>(props.notes)
-  const [errorType, setErrorType] = useState<keyof typeof errorTypes | undefined>()
+  const [name, setName] = useState<string>(props.name ?? '')
+  const [room, setRoom] = useState<string>(props.room ?? '')
+  const [notes, setNotes] = useState<string>(props.notes ?? '')
+  const [image, setImage] = useState<File>()
+  const [errorType, setErrorType] = useState<keyof typeof errorTypes>()
   const [changesMade, setChangesMade] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(false);
 
@@ -53,7 +56,7 @@ export const PlantModal = (props: PlantModalProps) => {
       setErrorType('name')
       return
     }
-    const response = await sendPostRequest('http://localhost:8000/api/plants/', {name: name, room: room, notes: notes})
+    const response = await sendPostRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/`, {name: name, room: room, notes: notes, image: image})
     const isOk = await response.ok
     if (isOk) {
       router.push('/')
@@ -68,7 +71,7 @@ export const PlantModal = (props: PlantModalProps) => {
       setErrorType('name')
       return
     }
-    const response = await sendPatchRequest(`http://localhost:8000/api/plants/${props.slug}/`, {name: name, room: room, notes: notes})
+    const response = await sendPatchRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/${props.slug}/`, {name: name, room: room, notes: notes, image: image})
     const isOk = await response.ok
     if (isOk) {
       setChangesMade(false)
@@ -79,7 +82,7 @@ export const PlantModal = (props: PlantModalProps) => {
   }
 
   const deletePlant = async () => {
-    const response = await sendDeleteRequest(`http://localhost:8000/api/plants/${props.slug}/`)
+    const response = await sendDeleteRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/${props.slug}/`)
     const isOk = await response.ok
     if (isOk) {
       router.push('/')
@@ -91,7 +94,13 @@ export const PlantModal = (props: PlantModalProps) => {
 
   const backToPlants = () => {
     router.push('/')
-    router.refresh()
+  }
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0]
+    if (selectedFile) {
+      setImage(selectedFile)
+    }
   }
 
   return (
@@ -120,6 +129,14 @@ export const PlantModal = (props: PlantModalProps) => {
           />
         </div>
         <div className={styles.InputWrapper}>
+          <label>Obrazek:</label>
+          <input 
+            className={styles.RoomInput}
+            type='file' 
+            onChange={(e) => handleFileChange(e)}
+          />
+        </div>
+        <div className={styles.InputWrapper}>
           <label>Notatki:</label>
           <textarea 
             value={notes ?? ''}
@@ -135,7 +152,7 @@ export const PlantModal = (props: PlantModalProps) => {
         </div>
         <div className={styles.RightContent}>
           <div className={styles.Button} onClick={props.update ? updatePlant : sendNewPlant}>{props.update ? 'Zapisz' : 'Dodaj'}</div>
-          <div className={styles.CancelButton} onClick={backToPlants}>{changesMade ? 'Anuluj' : 'Wróć'}</div>
+          <Link href='/'><div className={styles.CancelButton}>{changesMade ? 'Anuluj' : 'Wróć'}</div></Link>
         </div>
       </div>
     </div>

@@ -1,3 +1,5 @@
+
+import VideoBackground from '@/components/VideoBackground/VideoBackground'
 import './globals.css'
 import styles from './layout.module.scss'
 
@@ -11,9 +13,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  
   return (
     <html lang="en">
-      <body className={styles.main}>{children}</body>
+      <head></head>
+      <body className={styles.main}>
+          <VideoBackground />
+          {children}
+      </body>
     </html>
   )
 }

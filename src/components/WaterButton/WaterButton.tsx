@@ -14,7 +14,7 @@ export const WaterButton = ({slug}: { slug: string}) => {
         const data = {
             last_time_watered: new Date().toISOString()
         };
-        const response = await sendPatchRequest(`http://localhost:8000/api/plants/${slug}/`, data)
+        const response = await sendPatchRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/${slug}/`, data)
         if (response.ok) {
             router.refresh()
         }

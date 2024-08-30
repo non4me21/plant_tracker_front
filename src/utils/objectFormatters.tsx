@@ -14,7 +14,7 @@ export const snakeToCamel = (obj: any): any => {
 export const camelToSnake = (input: any): any => {
     if (Array.isArray(input)) {
       return input.map((item) => camelToSnake(item));
-    } else if (typeof input === 'object' && input !== null) {
+    } else if (typeof input === 'object' && input !== null && !(input instanceof File)) {
       return Object.keys(input).reduce((acc, key) => {
         const snakeKey = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
         acc[snakeKey] = camelToSnake(input[key]);

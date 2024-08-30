@@ -2,13 +2,15 @@ import { camelToSnake } from "./objectFormatters";
 
 export const sendPatchRequest = async (url: string, data: any): Promise<any> => {
   const formattedData = camelToSnake(data);
+  const formData = new FormData();
+  for (let key of Object.keys(formattedData)) {
+    const newKey = camelToSnake(key)
+    formData.append(newKey, data[key]);
+  }
   try {
     const response = await fetch(url, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formattedData)
+      body: formData
     });
 
     if (!response.ok) {
@@ -23,14 +25,16 @@ export const sendPatchRequest = async (url: string, data: any): Promise<any> => 
   };
 
 export const sendPostRequest = async (url: string, data: any): Promise<any> => {
-  const formattedData = camelToSnake(data)
+  const formattedData = camelToSnake(data);
+  const formData = new FormData();
+  for (let key of Object.keys(formattedData)) {
+    const newKey = camelToSnake(key)
+    formData.append(newKey, data[key]);
+  }
   try {
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formattedData)
+      body: formData
     });
 
     if (!response.ok) {
