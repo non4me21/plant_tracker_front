@@ -21,6 +21,7 @@ export const PlantCard = ({plant}: { plant: Plant }) => {
             <Link 
                 className={styles.PlantInfo}
                 href={`/roslina/${plant.slug}`}
+                passHref
             >
                 <div className={styles.PlantNameWrapper}>
                     <span className={styles.PlantName}>{plant.name}</span>

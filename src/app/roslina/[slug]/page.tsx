@@ -5,7 +5,7 @@ import { Title } from "@/components/Title/Title";
 import { PlantModal } from "@/components/PlantModal/PlantModal";
 
 const getPlantData = async (slug: string) => {
-  const data = await fetch(`http://web:8000/api/plants/${slug}`, { cache: 'no-store' })
+  const data = await fetch(`${process.env.NEXT_SOURCE}/api/plants/${slug}`, { cache: 'no-store' })
   const plants = await data.json()
   return snakeToCamel(plants)
 }
@@ -23,6 +23,7 @@ export default async function Page( {params}: {params: {slug: string}}) {
           room={plantData.room}
           notes={plantData.notes}
           slug={plantData.slug}
+          image={plantData.image}
           update
         />
     </RootLayout>

@@ -1,4 +1,5 @@
 import { BlankPlant } from "../BlankPlant/BlankPlant";
+import NewPlantCard from "../NewPlantCard/NewPlantCard";
 import { Plant, PlantCard } from "../PlantCard/PlantCard";
 import styles from './PlantsGrid.module.scss'
 
