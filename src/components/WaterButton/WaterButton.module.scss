@@ -1,13 +1,17 @@
+@import '@/styles/variables.scss';
+
 .WaterButton {
-    border: 2px solid black;
+    border: 1px solid black;
     border-radius: 100%;
     display: grid;
     place-items: center;
     padding: 5px;
     height: fit-content;
     width: fit-content;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 
     &:hover {
+        background-color: $hover-blue;
         cursor: pointer;
     }
 }

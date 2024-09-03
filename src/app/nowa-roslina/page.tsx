@@ -7,11 +7,11 @@ import { PlantModal } from "@/components/PlantModal/PlantModal";
 
 export default async function Page() {
   return (
-    <RootLayout>
+    <>
         <Title
           title={'Nowa roślina 🌱:'}
         />
         <PlantModal />
-    </RootLayout>
+    </>
   );
 }

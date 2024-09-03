@@ -1,16 +1,32 @@
 import Link from 'next/link'
 import styles from './NewPlantCard.module.scss'
 import Image from 'next/image'
+import { Divider } from '@mui/material'
+import { WaterButton } from '../WaterButton/WaterButton';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 
 export interface Plant {
-  name: string
-  slug: string
-  room?: string
-  lastTimeWatered?: string
-  image?: string
+  name: string;
+  slug: string;
+  room?: string;
+  lastTimeWatered?: string;
+  image?: string;
+  notes?: string;
 }
 
 const NewPlantCard = ({plant}: {plant: Plant}) => {
+
+  let notes = plant.notes
+  if (notes && notes.length > 50) {
+    notes = notes.slice(0, 50) + '...'
+  }
+
+  let dateLabel;
+  if (plant.lastTimeWatered) {
+    const date = new Date(plant.lastTimeWatered)
+    dateLabel = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+  }
+
   return (
     <div className={styles.PlantCard}>
         <Image
@@ -21,9 +37,27 @@ const NewPlantCard = ({plant}: {plant: Plant}) => {
           width={140}
         />
       <div className={styles.PlantCardInfo}>
-        <div className={styles.PlantName}>
-          {plant.name}
+        <div className={styles.NameRoomInfo}>
+          <span className={styles.Name}>{plant.name}</span>
+          {plant.room && 
+          <>
+            <Divider flexItem/>
+            <span>{plant.room}</span>
+          </>
+          }
         </div>
+        <div className={styles.LastWatering}>
+          <span>Last watered: {dateLabel ?? 'Never'}</span>
+        </div>
+        <div className={styles.Notes}>
+          {notes}
+        </div>
+      </div>
+      <div className={styles.ButtonsWrapper}>
+        <WaterButton slug={plant.slug}/>
+        <Link className={styles.EditButton} href={`/roslina/${plant.slug}`}>
+            <EditNoteIcon /> 
+        </Link>
       </div>
     </div>
   )

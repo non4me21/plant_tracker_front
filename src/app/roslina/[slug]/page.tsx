@@ -14,7 +14,7 @@ const getPlantData = async (slug: string) => {
 export default async function Page( {params}: {params: {slug: string}}) {
   const plantData = await getPlantData(params.slug)
   return (
-    <RootLayout>
+    <>
         <Title
           title={`${plantData.name} 🌱:`}
         />
@@ -26,6 +26,6 @@ export default async function Page( {params}: {params: {slug: string}}) {
           image={plantData.image}
           update
         />
-    </RootLayout>
+    </>
   );
 }

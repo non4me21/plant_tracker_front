@@ -4,6 +4,9 @@ import styles from './PlantsModal.module.scss'
 import { sendDeleteRequest, sendPatchRequest, sendPostRequest } from '@/utils/requestsUtils';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'
+import TextField from '@mui/material/TextField';
+import ImageUpload from '../ImageUpload/ImageUpload';
+import { Modal } from '@mui/material';
 
 interface PlantModalProps {
   name?: string;
@@ -18,7 +21,7 @@ interface PlantModalProps {
 export const PlantModal = (props: PlantModalProps) => {
 
   const errorTypes = {
-    name: 'Nazwa jest wymagana',
+    name: 'Name is required',
     serwer: 'Problem z przetworzeniem żądania'
   }
 
@@ -29,6 +32,7 @@ export const PlantModal = (props: PlantModalProps) => {
   const [errorType, setErrorType] = useState<keyof typeof errorTypes>()
   const [changesMade, setChangesMade] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(false);
+  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
 
   const router = useRouter()
 
@@ -56,7 +60,7 @@ export const PlantModal = (props: PlantModalProps) => {
       setErrorType('name')
       return
     }
-    const response = await sendPostRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/`, {name: name, room: room, notes: notes, image: image})
+    const response = await sendPostRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/`, {name: name, room: room, notes: notes, image: image ?? ''})
     const isOk = await response.ok
     if (isOk) {
       router.push('/')
@@ -71,7 +75,7 @@ export const PlantModal = (props: PlantModalProps) => {
       setErrorType('name')
       return
     }
-    const response = await sendPatchRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/${props.slug}/`, {name: name, room: room, notes: notes, image: image})
+    const response = await sendPatchRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/${props.slug}/`, {name: name, room: room, notes: notes, image: image ?? ''})
     const isOk = await response.ok
     if (isOk) {
       setChangesMade(false)
@@ -92,69 +96,71 @@ export const PlantModal = (props: PlantModalProps) => {
     }
   }
 
-  const backToPlants = () => {
-    router.push('/')
-  }
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0]
-    if (selectedFile) {
-      setImage(selectedFile)
-    }
+  let imageSrc;
+  if (image) {
+    imageSrc = URL.createObjectURL(image)
+  } else if (props.image) {
+    imageSrc = props.image
+  } else {
+    imageSrc = '/icons/plant.png'
   }
 
   return (
     <div className={styles.PlantModal}>
-      {errorType && <span className={styles.Error}>{errorTypes[errorType]}</span>}
       {saved && <span className={styles.Info}>Zapisano</span>}
-      <div className={styles.ModalContent}>
-        <div className={styles.InputWrapper}>
-          <label>Nazwa:</label>
-          <input 
-            value={name}
-            className={styles.NameInput}
-            type='text' 
-            placeholder='Palma jamajska'
-            onChange={(e) => setName(e.target.value)}
-          />
+      <div className={styles.ModalGrid}>
+        <div className={styles.ImageWrapper}>
+          <ImageUpload image={imageSrc} setImage={setImage}/>
         </div>
-        <div className={styles.InputWrapper}>
-          <label>Pokój:</label>
-          <input 
-            value={room}
-            className={styles.RoomInput}
-            type='text' 
-            placeholder='Salon'
-            onChange={(e) => setRoom(e.target.value)}
+        <div className={styles.TextContent}>
+          <div className={styles.InputWrapper}>
+            <TextField 
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              label="Name"
+              fullWidth
+              required
+              error={errorType === 'name'}
+              helperText={errorType === 'name'? errorTypes[errorType] : ''}
           />
+          </div>
+          <div className={styles.InputWrapper}>
+            <TextField 
+              value={room}
+              onChange={(e) => setRoom(e.target.value)}
+              label="Room"
+              fullWidth
+          />
+          </div>
+          <div className={styles.NotesWrapper}>
+            <TextField 
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              label="Notes"
+              fullWidth
+              multiline
+              rows={4}
+          />
+          </div>
         </div>
-        <div className={styles.InputWrapper}>
-          <label>Obrazek:</label>
-          <input 
-            className={styles.RoomInput}
-            type='file' 
-            onChange={(e) => handleFileChange(e)}
-          />
-        </div>
-        <div className={styles.InputWrapper}>
-          <label>Notatki:</label>
-          <textarea 
-            value={notes ?? ''}
-            className={styles.NotesInput}
-            placeholder='Dwa razy w roku nawozić nawozem...'
-            onChange={(e) => setNotes(e.target.value)}
-          />
+        <div className={styles.Footer}>
+          <div className={styles.LeftContent}>
+            {props.update && <div className={styles.DeleteButton} onClick={() => setIsDeleteModal(true)}>Usuń</div>}
+          </div>
+          <div className={styles.RightContent}>
+            <Link className={styles.CancelButton} href='/' prefetch={false}>{changesMade ? 'Anuluj' : 'Wróć'}</Link>
+            <div className={styles.Button} onClick={props.update ? updatePlant : sendNewPlant}>{props.update ? 'Zapisz' : 'Dodaj'}</div>
+          </div>
         </div>
       </div>
-      <div className={styles.Footer}>
-        <div className={styles.LeftContent}>
-          {props.update && <div className={styles.DeleteButton} onClick={deletePlant}>Usuń</div>}
+      <Modal
+        open={isDeleteModal}
+        onClose={() => setIsDeleteModal(false)}
+      >
+        <div className={styles.ModalContent}>
+          <div>Czy na pewno chcesz usunąć roślinę {props.name}</div>
         </div>
-        <div className={styles.RightContent}>
-          <div className={styles.Button} onClick={props.update ? updatePlant : sendNewPlant}>{props.update ? 'Zapisz' : 'Dodaj'}</div>
-          <Link href='/'><div className={styles.CancelButton}>{changesMade ? 'Anuluj' : 'Wróć'}</div></Link>
-        </div>
-      </div>
+      </Modal>
     </div>
   )
 }

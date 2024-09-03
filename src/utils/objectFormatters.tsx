@@ -34,3 +34,13 @@ export const formatDate = (date: Date | string): string => {
     const year = date.getFullYear();
     return `${day}.${month}.${year} ${time}`;
 };
+
+export const removeUndefinedProperties = <T extends Record<string, any>>(obj: T): T => {
+  for (const key in obj) {
+    if (obj[key] === undefined) {
+      delete obj[key];
+    }
+  }
+  return obj;
+};
+

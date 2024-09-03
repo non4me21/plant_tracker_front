@@ -11,13 +11,12 @@
 .backgroundVideo {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 55%;
   min-width: 100%;
   min-height: 100%;
   width: auto;
   height: auto;
   transform: translate(-50%, -50%);
-  background-size: cover;
-  filter: blur(30px); 
   opacity: 1;
+  scale: 1.1;
 }
