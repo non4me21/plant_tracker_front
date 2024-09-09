@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Divider } from '@mui/material'
 import { WaterButton } from '../WaterButton/WaterButton';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import { propagateServerField } from 'next/dist/server/lib/render-server';
 
 export interface Plant {
   name: string;
@@ -49,9 +50,14 @@ const NewPlantCard = ({plant}: {plant: Plant}) => {
         <div className={styles.LastWatering}>
           <span>Last watered: {dateLabel ?? 'Never'}</span>
         </div>
-        <div className={styles.Notes}>
-          {notes}
-        </div>
+        {plant.notes &&
+          <>
+            <div className={styles.Notes}>
+              {notes}
+            </div>
+            {plant.notes.length > 50 && <div className={styles.NotesPopover}>{plant.notes}</div>}
+          </>
+        }
       </div>
       <div className={styles.ButtonsWrapper}>
         <WaterButton slug={plant.slug}/>

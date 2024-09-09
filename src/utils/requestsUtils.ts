@@ -2,6 +2,7 @@ import { camelToSnake } from "./objectFormatters";
 
 export const sendPatchRequest = async (url: string, data: any): Promise<any> => {
   const formattedData = camelToSnake(data);
+  console.log(formattedData)
   const formData = new FormData();
   for (let key of Object.keys(formattedData)) {
     const newKey = camelToSnake(key)

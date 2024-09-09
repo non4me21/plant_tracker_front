@@ -123,12 +123,52 @@
   }
 }
 
-.ModalContent {
-  position: absolute;
-  background-color: $primary-white;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  outline: none;
-  padding: 20px 10px;
-}
+  .ModalContent {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: $primary-white;
+    border-radius: 5px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    outline: none;
+    padding: 20px 10px;
+  
+    .Buttons {
+      display: flex;
+      justify-content: space-evenly;
+      
+      .ModalButton {
+        all: unset;
+        padding: 5px 10px;
+        color: $primary-white;
+        border-radius: 5px;
+        border: 1px solid transparent;
+  
+        &.Yes {
+          background-color: $main-red;
+  
+          &:hover {
+            background-color: $primary-white;
+            color: $main-red;
+            cursor: pointer;
+            border-color: $main-red;
+          }
+        }
+  
+        &.No {
+          background-color: $main-green;
+  
+          &:hover {
+            background-color: $primary-white;
+            color: $main-green;
+            cursor: pointer;
+            border-color: $main-green;
+          }
+        }
+      }
+    }
+  }
+

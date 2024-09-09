@@ -1,10 +1,10 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, MouseEventHandler } from 'react';
 import styles from './ImageUpload.module.scss'
 import Image from 'next/image'
 import CropFreeIcon from '@mui/icons-material/CropFree';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const ImageUpload = ({ image, setImage }: { image: string, setImage: (image: File) => void }) => {
-  console.log(image)
+const ImageUpload = ({ image, setImage }: { image: string, setImage: (image: File | string ) => void }) => {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
@@ -15,6 +15,11 @@ const ImageUpload = ({ image, setImage }: { image: string, setImage: (image: Fil
         console.log('not good format')
       }
     }
+  }
+
+  const handleFileDelete = (event: any) => {
+    event.stopPropagation()
+    setImage('/icons/plant.png')
   }
   return (
     <div className={styles.ImageUpload}>
@@ -29,6 +34,7 @@ const ImageUpload = ({ image, setImage }: { image: string, setImage: (image: Fil
         <CropFreeIcon className={styles.Icon} fontSize="large"/>
       </label>
       <input id='add-image' type="file" accept='image/*' onChange={handleFileChange}/>
+      <DeleteIcon className={styles.DeleteIcon} fontSize="large" onClick={(event) => handleFileDelete(event)}/>
     </div>
   )
 }

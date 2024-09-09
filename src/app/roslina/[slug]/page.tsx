@@ -4,6 +4,13 @@ import { PlantsGrid } from "@/components/PlantsGrid/PlantsGrid";
 import { Title } from "@/components/Title/Title";
 import { PlantModal } from "@/components/PlantModal/PlantModal";
 
+export const generateMetadata = () => {
+  return {
+    "title": "Edit your plant",
+    "description": "Edit your plant attributes like name, image or description"
+  }
+}
+
 const getPlantData = async (slug: string) => {
   const data = await fetch(`${process.env.NEXT_SOURCE}/api/plants/${slug}`, { cache: 'no-store' })
   const plants = await data.json()

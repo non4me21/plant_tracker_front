@@ -7,6 +7,8 @@ import Link from 'next/link'
 import TextField from '@mui/material/TextField';
 import ImageUpload from '../ImageUpload/ImageUpload';
 import { Modal } from '@mui/material';
+import classNames from 'classnames'
+
 
 interface PlantModalProps {
   name?: string;
@@ -28,7 +30,7 @@ export const PlantModal = (props: PlantModalProps) => {
   const [name, setName] = useState<string>(props.name ?? '')
   const [room, setRoom] = useState<string>(props.room ?? '')
   const [notes, setNotes] = useState<string>(props.notes ?? '')
-  const [image, setImage] = useState<File>()
+  const [image, setImage] = useState<File | string>()
   const [errorType, setErrorType] = useState<keyof typeof errorTypes>()
   const [changesMade, setChangesMade] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(false);
@@ -60,7 +62,16 @@ export const PlantModal = (props: PlantModalProps) => {
       setErrorType('name')
       return
     }
-    const response = await sendPostRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/`, {name: name, room: room, notes: notes, image: image ?? ''})
+    const data: {[key: string]: string | File }  = {name: name, room: room, notes: notes}
+    if (typeof image === 'string') {
+      data.image = ''
+    } else if (image === undefined) {
+      data.image = ''
+    } else {
+      data.image = image
+    }
+  
+    const response = await sendPostRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/`, data)
     const isOk = await response.ok
     if (isOk) {
       router.push('/')
@@ -75,7 +86,16 @@ export const PlantModal = (props: PlantModalProps) => {
       setErrorType('name')
       return
     }
-    const response = await sendPatchRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/${props.slug}/`, {name: name, room: room, notes: notes, image: image ?? ''})
+    const data: {[key: string]: string | File }  = {name: name, room: room, notes: notes}
+    if (typeof image === 'string') {
+      data.image = ''
+    } else if (image === undefined) {
+      
+    } else {
+      data.image = image
+    }
+    console.log(data)
+    const response = await sendPatchRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/${props.slug}/`, data)
     const isOk = await response.ok
     if (isOk) {
       setChangesMade(false)
@@ -96,9 +116,18 @@ export const PlantModal = (props: PlantModalProps) => {
     }
   }
 
+  const goBack = async () => {
+    router.push('/')
+    router.refresh()
+  }
+
   let imageSrc;
   if (image) {
-    imageSrc = URL.createObjectURL(image)
+    if (typeof image === 'string') {
+      imageSrc = image;
+    } else {
+      imageSrc = URL.createObjectURL(image)
+    }
   } else if (props.image) {
     imageSrc = props.image
   } else {
@@ -148,7 +177,7 @@ export const PlantModal = (props: PlantModalProps) => {
             {props.update && <div className={styles.DeleteButton} onClick={() => setIsDeleteModal(true)}>Usuń</div>}
           </div>
           <div className={styles.RightContent}>
-            <Link className={styles.CancelButton} href='/' prefetch={false}>{changesMade ? 'Anuluj' : 'Wróć'}</Link>
+            <div className={styles.CancelButton} onClick={goBack} >{changesMade ? 'Anuluj' : 'Wróć'}</div>
             <div className={styles.Button} onClick={props.update ? updatePlant : sendNewPlant}>{props.update ? 'Zapisz' : 'Dodaj'}</div>
           </div>
         </div>
@@ -158,7 +187,11 @@ export const PlantModal = (props: PlantModalProps) => {
         onClose={() => setIsDeleteModal(false)}
       >
         <div className={styles.ModalContent}>
-          <div>Czy na pewno chcesz usunąć roślinę {props.name}</div>
+          <div>Czy na pewno chcesz usunąć roślinę {props.name}?</div>
+          <div className={styles.Buttons}>
+            <button className={classNames(styles.ModalButton, styles.No)} onClick={() => setIsDeleteModal(false)}>Nie</button>
+            <button className={classNames(styles.ModalButton, styles.Yes)} onClick={deletePlant}>Tak</button>
+          </div>
         </div>
       </Modal>
     </div>

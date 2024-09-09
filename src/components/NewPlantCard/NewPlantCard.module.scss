@@ -11,6 +11,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   gap: 20px;
+  position: relative;
 
   .Image {
     position: relative;
@@ -41,6 +42,39 @@
         }
       }
     }
+
+    .Notes {
+      cursor: pointer;
+      border: 1px solid $light-gray;
+      border-radius: 5px;
+      padding: 5px;
+
+      &:hover + .NotesPopover, &:active + .NotesPopover {
+        position: absolute;
+        display: block;
+        z-index: 10;
+        overflow: visible;
+        background-color: $primary-white;
+        border: 1px solid $light-gray;
+        padding: 5px 10px;
+    }
+    }
+
+    .NotesPopover {
+      display: none;
+      bottom: 10%;
+      right: 10%;
+
+      &:hover {
+        position: absolute;
+        display: block;
+        z-index: 10;
+        overflow: visible;
+        background-color: $primary-white;
+        border: 1px solid $light-gray;
+        padding: 5px 10px;
+      }
+    }
   }
 
   .ButtonsWrapper {
@@ -58,6 +92,7 @@
       height: fit-content;
       width: fit-content;
       transition: background-color 0.3s ease, transform 0.3s ease;
+      box-shadow: 0px 0px 20px 0px rgb(180, 180, 180);
 
       &:hover {
         background-color: $hover-yellow;

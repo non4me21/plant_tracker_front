@@ -17,6 +17,7 @@ export const WaterButton = ({slug}: { slug: string}) => {
         };
         const response = await sendPatchRequest(`${process.env.NEXT_PUBLIC_SOURCE}/api/plants/${slug}/`, data)
         if (response.ok) {
+            router.push('/')
             router.refresh()
         }
     }
