@@ -1,14 +1,14 @@
+'use client';
+
 
 import VideoBackground from '@/components/VideoBackground/VideoBackground'
 import './globals.css'
 import styles from './layout.module.scss'
+import BasicLayout from '@/containers/BasicLayout'
+import { CssBaseline, ThemeProvider } from '@mui/material'
+import { theme } from './themes'
 
-export const metadata = {
-  title: 'Plant Tracker',
-  description: 'Track info about your plants!',
-}
-
-export default function RootLayout({
+export default function Layout({
   children,
 }: {
   children: React.ReactNode
@@ -17,9 +17,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head></head>
-      <body className={styles.main}>
+      <body>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <div className={styles.BackgroundImage}/>
           <VideoBackground />
-          {children}
+          <BasicLayout>
+            {children}
+          </BasicLayout>
+        </ThemeProvider>
       </body>
     </html>
   )
